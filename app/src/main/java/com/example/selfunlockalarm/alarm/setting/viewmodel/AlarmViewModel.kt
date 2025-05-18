@@ -4,7 +4,7 @@ import android.app.AlarmManager
 import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.selfunlockalarm.domain.usecase.AlarmUseCase
+import com.example.selfunlockalarm.alarm.AlarmUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

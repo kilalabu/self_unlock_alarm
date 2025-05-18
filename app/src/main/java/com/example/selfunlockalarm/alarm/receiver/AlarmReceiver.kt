@@ -11,8 +11,8 @@ import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import com.example.selfunlockalarm.alarm.MainActivity
 import com.example.selfunlockalarm.R
-import com.example.selfunlockalarm.data.service.SystemAlarmScheduler
-import com.example.selfunlockalarm.domain.usecase.AlarmUseCase
+import com.example.selfunlockalarm.alarm.service.SystemAlarmScheduler
+import com.example.selfunlockalarm.alarm.AlarmUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
