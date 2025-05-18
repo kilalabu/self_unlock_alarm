@@ -42,7 +42,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun UnlockScreen(
     modifier: Modifier = Modifier,
     viewModel: UnlockViewModel = hiltViewModel(),
-    onPinVerificationResult: (isCorrect: Boolean) -> Unit
+    onUnlockSuccess: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -51,11 +51,10 @@ fun UnlockScreen(
             if (state is UnlockUiState.Ready) {
                 when (state.verificationState) {
                     UnlockUiState.Ready.VerificationState.SUCCESS -> {
-                        onPinVerificationResult(true)
+                        onUnlockSuccess()
                     }
 
                     UnlockUiState.Ready.VerificationState.FAILURE -> {
-                        onPinVerificationResult(false)
                         viewModel.resetPinInputAfterFailure()
                     }
 
@@ -107,17 +106,29 @@ private fun PinEntryContent(
 
         PinDisplay(pinLength = inputPin.length)
 
-        if (verificationState == UnlockUiState.Ready.VerificationState.FAILURE) {
-            Text(
-                text = "PINコードが違います", // このメッセージもUiStateから渡すようにするとより柔軟
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        } else {
-            // エラーメッセージがない場合は、同じ高さのスペーサーを確保してレイアウトがガタつくのを防ぐ
-            // Textのスタイルに合わせて高さを調整する必要がある
-            Spacer(modifier = Modifier.height(MaterialTheme.typography.bodyMedium.lineHeight.value.dp + 8.dp))
+        when (verificationState) {
+            UnlockUiState.Ready.VerificationState.FAILURE -> {
+                Text(
+                    text = "PINコードが違います",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            UnlockUiState.Ready.VerificationState.SUCCESS -> {
+                Text(
+                    text = "アラームを解除しました",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            else -> {
+                // メッセージがない場合は、同じ高さのスペーサーを確保してレイアウトがガタつくのを防ぐ
+                Spacer(modifier = Modifier.height(MaterialTheme.typography.bodyMedium.lineHeight.value.dp + 8.dp))
+            }
         }
 
 

@@ -1,5 +1,6 @@
 package com.example.selfunlockalarm.unlock
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,9 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.example.selfunlockalarm.alarm.MainActivity
+import com.example.selfunlockalarm.alarm.service.AlarmSoundService
 import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
 import com.example.selfunlockalarm.unlock.ui.UnlockScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.jvm.java
 
 @AndroidEntryPoint
 class UnlockActivity : ComponentActivity() {
@@ -22,12 +26,14 @@ class UnlockActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     UnlockScreen(
                         modifier = Modifier.padding(innerPadding),
-                        onPinVerificationResult = { isCorrect ->
-                            if (isCorrect) {
-                                // アラームを解除する処理を実行
-                            } else {
-                                //
+                        onUnlockSuccess = {
+                            val intent = Intent(this, AlarmSoundService::class.java).apply {
+                                action = AlarmSoundService.ACTION_STOP_ALARM
                             }
+                            startService(intent)
+
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
                         }
                     )
                 }
