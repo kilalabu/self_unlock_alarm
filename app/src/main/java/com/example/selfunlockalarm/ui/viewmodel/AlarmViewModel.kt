@@ -23,14 +23,13 @@ class AlarmViewModel @Inject constructor(
     private val alarmUseCase: AlarmUseCase
 ) : ViewModel() {
 
-    // UI状態
     private val _uiState = MutableStateFlow(AlarmUiState())
     val uiState: StateFlow<AlarmUiState> = _uiState.asStateFlow()
 
     init {
         // アラーム設定の変更を監視
         viewModelScope.launch {
-            alarmUseCase.alarmSettings.collect { settings ->
+            alarmUseCase.alarmSetting.collect { settings ->
                 _uiState.update { currentState ->
                     currentState.copy(
                         isAlarmEnabled = settings.isEnabled,
@@ -55,14 +54,26 @@ class AlarmViewModel @Inject constructor(
      * アラーム時間を更新
      */
     fun updateAlarmTime(hour: Int, minute: Int) {
-        alarmUseCase.updateAlarmTime(hour, minute)
+        viewModelScope.launch {
+            alarmUseCase.updateAlarmTime(
+                hour = hour,
+                minute = minute,
+                isEnabled = uiState.value.isAlarmEnabled
+            )
+        }
     }
 
     /**
      * アラームの有効/無効を切り替え
      */
     fun toggleAlarm(enabled: Boolean) {
-        alarmUseCase.toggleAlarm(enabled)
+        viewModelScope.launch {
+            alarmUseCase.toggleAlarm(
+                enabled = enabled,
+                hour = uiState.value.selectedHour,
+                minute = uiState.value.selectedMinute
+            )
+        }
     }
 
     /**
@@ -72,17 +83,6 @@ class AlarmViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 hasNotificationPermission = granted
-            )
-        }
-    }
-
-    /**
-     * 正確なアラーム権限の状態を更新
-     */
-    fun updateExactAlarmPermissionState(canSchedule: Boolean) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                canScheduleExactAlarms = canSchedule
             )
         }
     }

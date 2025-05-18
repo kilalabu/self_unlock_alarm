@@ -6,14 +6,16 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import com.example.selfunlockalarm.MainActivity
 import com.example.selfunlockalarm.R
 import com.example.selfunlockalarm.alarm.AlarmManagerHelper
+import com.example.selfunlockalarm.domain.usecase.AlarmUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,8 +23,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var alarmHelper: AlarmManagerHelper
+
     @Inject
-    lateinit var sharedPrefs: SharedPreferences
+    lateinit var alarmUseCase: AlarmUseCase
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == ACTION_ALARM) {
@@ -30,26 +33,29 @@ class AlarmReceiver : BroadcastReceiver() {
             showAlarmNotification(context)
 
             // 次の日のアラームを設定（毎日繰り返し）
-            // SharedPreferencesから設定を取得
-            val hourOfDay = sharedPrefs.getInt(PREF_HOUR, -1)
-            val minute = sharedPrefs.getInt(PREF_MINUTE, -1)
-            val isEnabled = sharedPrefs.getBoolean(PREF_ALARM_ENABLED, false)
-
-            if (isEnabled && hourOfDay != -1 && minute != -1) {
-                alarmHelper.scheduleAlarm(hourOfDay, minute)
-            }
+            rescheduleAlarmIfNeeded()
         }
 
         // デバイスが再起動されたときにアラームを再設定
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            // SharedPreferencesから設定を取得して再設定
-            val hourOfDay = sharedPrefs.getInt(PREF_HOUR, -1)
-            val minute = sharedPrefs.getInt(PREF_MINUTE, -1)
-            val isEnabled = sharedPrefs.getBoolean(PREF_ALARM_ENABLED, false)
+            rescheduleAlarmIfNeeded()
+        }
+    }
 
-            if (isEnabled && hourOfDay != -1 && minute != -1) {
-                alarmHelper.scheduleAlarm(hourOfDay, minute)
-            }
+    /**
+     * アラーム設定を確認し、必要に応じてアラームを再スケジュールする
+     */
+    private fun rescheduleAlarmIfNeeded() {
+        val setting = runBlocking {
+            alarmUseCase.alarmSetting.first()
+        }
+
+        val hourOfDay = setting.hour
+        val minute = setting.minute
+        val isEnabled = setting.isEnabled
+
+        if (isEnabled && hourOfDay != -1 && minute != -1) {
+            alarmHelper.scheduleAlarm(hourOfDay, minute)
         }
     }
 
@@ -123,10 +129,5 @@ class AlarmReceiver : BroadcastReceiver() {
         const val ACTION_STOP_ALARM = "com.example.selfunlockalarm.ACTION_STOP_ALARM"
         const val CHANNEL_ID = "alarm_channel"
         const val NOTIFICATION_ID = 1001
-
-        // SharedPreferences用の定数
-        const val PREF_HOUR = "hour"
-        const val PREF_MINUTE = "minute"
-        const val PREF_ALARM_ENABLED = "alarm_enabled"
     }
 }
