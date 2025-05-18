@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.ui.theme
+package com.example.selfunlockalarm.app.theme
 
 import androidx.compose.ui.graphics.Color
 

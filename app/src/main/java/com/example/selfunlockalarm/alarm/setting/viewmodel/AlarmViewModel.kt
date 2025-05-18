@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.ui.viewmodel
+package com.example.selfunlockalarm.alarm.setting.viewmodel
 
 import android.app.AlarmManager
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm
+package com.example.selfunlockalarm.alarm
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,8 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.selfunlockalarm.ui.AlarmScreen
-import com.example.selfunlockalarm.ui.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.alarm.setting.ui.AlarmScreen
+import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

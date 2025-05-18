@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.ui
+package com.example.selfunlockalarm.alarm.setting.ui
 
 import android.Manifest
 import android.app.TimePickerDialog
@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfunlockalarm.ui.viewmodel.AlarmViewModel
+import com.example.selfunlockalarm.alarm.setting.viewmodel.AlarmViewModel
 import java.util.Calendar
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.receiver
+package com.example.selfunlockalarm.alarm.receiver
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,7 +9,7 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
-import com.example.selfunlockalarm.MainActivity
+import com.example.selfunlockalarm.alarm.MainActivity
 import com.example.selfunlockalarm.R
 import com.example.selfunlockalarm.data.service.SystemAlarmScheduler
 import com.example.selfunlockalarm.domain.usecase.AlarmUseCase
@@ -95,7 +95,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         // アラームを止めるためのPendingIntent
         val stopIntent = Intent(context, AlarmReceiver::class.java).apply {
-            action = ACTION_STOP_ALARM
+            Intent.setAction = ACTION_STOP_ALARM
         }
         val stopPendingIntent = PendingIntent.getBroadcast(
             context,
