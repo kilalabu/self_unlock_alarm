@@ -13,18 +13,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * アラーム画面のViewModel
- * UIの状態管理とユーザーアクションの処理を担当
- */
 @HiltViewModel
-class AlarmViewModel @Inject constructor(
+class AlarmSettingViewModel @Inject constructor(
     private val alarmManager: AlarmManager,
     private val alarmUseCase: AlarmUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(AlarmUiState())
-    val uiState: StateFlow<AlarmUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(AlarmSettingUiState())
+    val uiState: StateFlow<AlarmSettingUiState> = _uiState.asStateFlow()
 
     init {
         // アラーム設定の変更を監視
@@ -89,9 +85,9 @@ class AlarmViewModel @Inject constructor(
 }
 
 /**
- * アラーム画面のUI状態
+ * アラーム設定画面のUI状態
  */
-data class AlarmUiState(
+data class AlarmSettingUiState(
     val isAlarmEnabled: Boolean = false,
     val selectedHour: Int = 7,
     val selectedMinute: Int = 0,

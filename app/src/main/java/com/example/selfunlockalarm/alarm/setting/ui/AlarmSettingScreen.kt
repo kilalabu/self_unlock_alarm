@@ -18,15 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfunlockalarm.alarm.setting.viewmodel.AlarmViewModel
+import com.example.selfunlockalarm.alarm.setting.viewmodel.AlarmSettingViewModel
 import java.util.Calendar
 import androidx.core.net.toUri
 
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
-fun AlarmScreen(
+fun AlarmSettingScreen(
     modifier: Modifier = Modifier,
-    viewModel: AlarmViewModel = hiltViewModel()
+    viewModel: AlarmSettingViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()

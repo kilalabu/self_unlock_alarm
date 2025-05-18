@@ -23,12 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.selfunlockalarm.alarm.setting.viewmodel.AlarmUiState
+import com.example.selfunlockalarm.alarm.setting.viewmodel.AlarmSettingUiState
 import java.util.Locale
 
 @Composable
 fun AlarmSettingContent(
-    uiState: AlarmUiState,
+    uiState: AlarmSettingUiState,
     onTimeClick: () -> Unit,
     onToggleAlarm: (Boolean) -> Unit,
     onRequestExactAlarmPermission: () -> Unit,
@@ -109,7 +109,7 @@ fun AlarmSettingContent(
 @Preview(showBackground = true)
 @Composable
 private fun AlarmSettingContent_Preview() {
-    val sampleState = AlarmUiState(
+    val sampleState = AlarmSettingUiState(
         selectedHour = 7,
         selectedMinute = 30,
         isAlarmEnabled = true,
