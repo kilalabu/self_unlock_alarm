@@ -95,7 +95,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         // アラームを止めるためのPendingIntent
         val stopIntent = Intent(context, AlarmReceiver::class.java).apply {
-            Intent.setAction = ACTION_STOP_ALARM
+            action = ACTION_STOP_ALARM
         }
         val stopPendingIntent = PendingIntent.getBroadcast(
             context,
