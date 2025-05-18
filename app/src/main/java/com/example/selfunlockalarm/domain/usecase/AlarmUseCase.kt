@@ -1,6 +1,6 @@
 package com.example.selfunlockalarm.domain.usecase
 
-import com.example.selfunlockalarm.alarm.AlarmManagerHelper
+import com.example.selfunlockalarm.data.service.SystemAlarmScheduler
 import com.example.selfunlockalarm.data.repository.AlarmRepository
 import com.example.selfunlockalarm.domain.model.AlarmSetting
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AlarmUseCase @Inject constructor(
-    private val alarmHelper: AlarmManagerHelper,
+    private val alarmScheduler: SystemAlarmScheduler,
     private val alarmRepository: AlarmRepository
 ) {
     /**
@@ -24,10 +24,10 @@ class AlarmUseCase @Inject constructor(
         alarmRepository.setAlarmEnabled(enabled)
         if (enabled) {
             // アラームを有効化
-            alarmHelper.scheduleAlarm(hour, minute)
+            alarmScheduler.scheduleAlarm(hour, minute)
         } else {
             // アラームをキャンセル
-            alarmHelper.cancelAlarm()
+            alarmScheduler.cancelAlarm()
         }
     }
 
@@ -40,7 +40,7 @@ class AlarmUseCase @Inject constructor(
         
         // アラームが有効な場合は再スケジュール
         if (isEnabled) {
-            alarmHelper.scheduleAlarm(hour, minute)
+            alarmScheduler.scheduleAlarm(hour, minute)
         }
     }
 }

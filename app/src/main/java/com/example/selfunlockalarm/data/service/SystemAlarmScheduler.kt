@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.alarm
+package com.example.selfunlockalarm.data.service
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -11,7 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import javax.inject.Inject
 
-class AlarmManagerHelper @Inject constructor(
+class SystemAlarmScheduler @Inject constructor(
     @ApplicationContext private val context: Context,
     private val alarmManager: AlarmManager
 ) {
