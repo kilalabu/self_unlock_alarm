@@ -79,6 +79,9 @@ protobuf {
     generateProtoTasks {
         all().forEach { task ->
             task.builtins {
+                register("java") {
+                    option("lite")
+                }
                 register("kotlin") {
                     option("lite")
                 }
