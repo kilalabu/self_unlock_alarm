@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.data.service
+package com.example.selfunlockalarm.alarm.service
 
 import android.app.AlarmManager
 import android.app.PendingIntent
