@@ -7,11 +7,14 @@ import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import com.example.selfunlockalarm.receiver.AlarmReceiver
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
+import javax.inject.Inject
 
-class AlarmManagerHelper(private val context: Context) {
-
-    private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+class AlarmManagerHelper @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val alarmManager: AlarmManager
+) {
 
     /**
      * 毎日特定の時間にアラームをスケジュールする

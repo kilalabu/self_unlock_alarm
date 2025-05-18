@@ -1,7 +1,6 @@
 package com.example.selfunlockalarm.ui
 
 import android.Manifest
-import android.app.AlarmManager
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -28,10 +27,8 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,43 +36,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import com.example.selfunlockalarm.alarm.AlarmManagerHelper
-import com.example.selfunlockalarm.receiver.AlarmReceiver
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.selfunlockalarm.ui.viewmodel.AlarmViewModel
 import java.util.Calendar
 
 @Composable
 fun AlarmScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AlarmViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
-    // アラーム設定の状態を管理
-    var alarmEnabled by remember { mutableStateOf(false) }
-    var selectedHour by remember { mutableStateOf(7) } // デフォルト7時
-    var selectedMinute by remember { mutableStateOf(0) } // デフォルト0分
-
-    // SharedPreferencesからアラーム設定を読み込む
-    LaunchedEffect(key1 = Unit) {
-        val sharedPrefs = context.getSharedPreferences(
-            AlarmReceiver.ALARM_PREFS,
-            Context.MODE_PRIVATE
-        )
-
-        alarmEnabled = sharedPrefs.getBoolean(AlarmReceiver.PREF_ALARM_ENABLED, false)
-        selectedHour = sharedPrefs.getInt(AlarmReceiver.PREF_HOUR, 7)
-        selectedMinute = sharedPrefs.getInt(AlarmReceiver.PREF_MINUTE, 0)
-    }
+    val uiState by viewModel.uiState.collectAsState()
 
     // 通知権限のリクエスト
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted) {
-            // 権限が付与された場合の処理
-            if (alarmEnabled) {
-                scheduleAlarm(context, selectedHour, selectedMinute)
-            }
-        }
+        viewModel.updateNotificationPermissionState(isGranted)
     }
 
     // 画面表示時に通知権限をチェック
@@ -86,9 +63,16 @@ fun AlarmScreen(
                 Manifest.permission.POST_NOTIFICATIONS
             )
 
+            viewModel.updateNotificationPermissionState(
+                permissionState == PackageManager.PERMISSION_GRANTED
+            )
+
             if (permissionState != PackageManager.PERMISSION_GRANTED) {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
+        } else {
+            // Android 13未満は通知権限が必要ない
+            viewModel.updateNotificationPermissionState(true)
         }
     }
 
@@ -122,7 +106,7 @@ fun AlarmScreen(
 
                 // 現在設定されている時間の表示
                 Text(
-                    text = String.format("%02d:%02d", selectedHour, selectedMinute),
+                    text = String.format("%02d:%02d", uiState.selectedHour, uiState.selectedMinute),
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -133,16 +117,7 @@ fun AlarmScreen(
                 Button(
                     onClick = {
                         showTimePickerDialog(context) { hour, minute ->
-                            selectedHour = hour
-                            selectedMinute = minute
-
-                            // 選択した時間をSharedPreferencesに保存
-                            saveAlarmSettings(context, alarmEnabled, hour, minute)
-
-                            // アラームが有効な場合は再設定
-                            if (alarmEnabled) {
-                                scheduleAlarm(context, hour, minute)
-                            }
+                            viewModel.updateAlarmTime(hour, minute)
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -164,21 +139,9 @@ fun AlarmScreen(
                     )
 
                     Switch(
-                        checked = alarmEnabled,
+                        checked = uiState.isAlarmEnabled,
                         onCheckedChange = { isEnabled ->
-                            alarmEnabled = isEnabled
-
-                            // アラーム設定の保存
-                            saveAlarmSettings(context, isEnabled, selectedHour, selectedMinute)
-
-                            if (isEnabled) {
-                                // アラームを設定
-                                scheduleAlarm(context, selectedHour, selectedMinute)
-                            } else {
-                                // アラームをキャンセル
-                                val alarmHelper = AlarmManagerHelper(context)
-                                alarmHelper.cancelAlarm()
-                            }
+                            viewModel.toggleAlarm(isEnabled)
                         }
                     )
                 }
@@ -186,21 +149,18 @@ fun AlarmScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Android 12以降で正確なアラーム権限が必要な場合の設定ボタン
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                    if (!alarmManager.canScheduleExactAlarms()) {
-                        OutlinedButton(
-                            onClick = {
-                                val intent = Intent(
-                                    Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
-                                    Uri.parse("package:${context.packageName}")
-                                )
-                                context.startActivity(intent)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("正確なアラーム権限を設定")
-                        }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !uiState.canScheduleExactAlarms) {
+                    OutlinedButton(
+                        onClick = {
+                            val intent = Intent(
+                                Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                                Uri.parse("package:${context.packageName}")
+                            )
+                            context.startActivity(intent)
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("正確なアラーム権限を設定")
                     }
                 }
             }
@@ -228,38 +188,4 @@ private fun showTimePickerDialog(
         minute,
         true // 24時間表示
     ).show()
-}
-
-/**
- * アラーム設定をSharedPreferencesに保存
- */
-private fun saveAlarmSettings(
-    context: Context,
-    enabled: Boolean,
-    hour: Int,
-    minute: Int
-) {
-    val sharedPrefs = context.getSharedPreferences(
-        AlarmReceiver.ALARM_PREFS,
-        Context.MODE_PRIVATE
-    )
-
-    sharedPrefs.edit().apply {
-        putBoolean(AlarmReceiver.PREF_ALARM_ENABLED, enabled)
-        putInt(AlarmReceiver.PREF_HOUR, hour)
-        putInt(AlarmReceiver.PREF_MINUTE, minute)
-        apply()
-    }
-}
-
-/**
- * アラームをスケジュール
- */
-private fun scheduleAlarm(
-    context: Context,
-    hour: Int,
-    minute: Int
-) {
-    val alarmHelper = AlarmManagerHelper(context)
-    alarmHelper.scheduleAlarm(hour, minute)
 }
