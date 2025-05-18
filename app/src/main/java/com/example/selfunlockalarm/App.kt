@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.app
+package com.example.selfunlockalarm
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
