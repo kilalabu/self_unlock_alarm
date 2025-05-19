@@ -43,12 +43,6 @@
             android:turnScreenOn="true">
         </activity>
 
-        <activity
-            android:name=".pin.PinSettingActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SelfUnlockAlarm">
-        </activity>
-
         <service
             android:name=".alarm.service.AlarmSoundService"
             android:exported="false"

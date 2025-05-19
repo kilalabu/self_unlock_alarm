@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -56,24 +58,26 @@ fun AlarmSettingScreen(
         }
     }
 
-    AlarmSettingContent(
-        uiState = uiState,
-        onTimeClick = {
-            showTimePickerDialog(context) { h, m ->
-                viewModel.updateAlarmTime(h, m)
-            }
-        },
-        onToggleAlarm = { enabled ->
-            viewModel.toggleAlarm(enabled)
-        },
-        onRequestExactAlarmPermission = {
-            onNavigateExactAlarmPermissionSettings()
-        },
-        onPinSettingClick = {
-            onNavigateToPinSetting()
-        },
-        modifier = modifier
-    )
+    Scaffold { innerPadding ->
+        AlarmSettingContent(
+            uiState = uiState,
+            onTimeClick = {
+                showTimePickerDialog(context) { h, m ->
+                    viewModel.updateAlarmTime(h, m)
+                }
+            },
+            onToggleAlarm = { enabled ->
+                viewModel.toggleAlarm(enabled)
+            },
+            onRequestExactAlarmPermission = {
+                onNavigateExactAlarmPermissionSettings()
+            },
+            onPinSettingClick = {
+                onNavigateToPinSetting()
+            },
+            modifier = modifier.padding(innerPadding)
+        )
+    }
 }
 
 /**
