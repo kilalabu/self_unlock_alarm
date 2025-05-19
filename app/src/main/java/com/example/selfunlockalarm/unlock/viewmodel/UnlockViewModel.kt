@@ -2,6 +2,7 @@ package com.example.selfunlockalarm.unlock.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.selfunlockalarm.alarm.AlarmUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UnlockViewModel @Inject constructor(
+    private val alarmUseCase: AlarmUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UnlockUiState>(UnlockUiState.Loading)
     val uiState: StateFlow<UnlockUiState> = _uiState.asStateFlow()
@@ -22,13 +24,9 @@ class UnlockViewModel @Inject constructor(
 
     private fun loadInitialData() {
         viewModelScope.launch {
-            // ここで非同期に正しいPINコードを取得するなどの処理を行う
-            // val actualCorrectPin = getCorrectPinUseCase() // 例
-            val actualCorrectPin = "1234" // 仮の正しいPIN (動的に設定すること)
-
             _uiState.value = UnlockUiState.Ready(
                 inputPin = "",
-                correctPin = actualCorrectPin,
+                correctPin = alarmUseCase.getPinCode(),
                 verificationState = UnlockUiState.Ready.VerificationState.INITIAL
             )
         }

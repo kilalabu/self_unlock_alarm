@@ -3,13 +3,10 @@ package com.example.selfunlockalarm.alarm.setting.ui
 import android.Manifest
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,13 +17,13 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.selfunlockalarm.alarm.setting.viewmodel.AlarmSettingViewModel
 import java.util.Calendar
-import androidx.core.net.toUri
 
-@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun AlarmSettingScreen(
     modifier: Modifier = Modifier,
-    viewModel: AlarmSettingViewModel = hiltViewModel()
+    viewModel: AlarmSettingViewModel = hiltViewModel(),
+    onNavigateExactAlarmPermissionSettings: () -> Unit,
+    onNavigateToPinSetting: () -> Unit
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -70,7 +67,10 @@ fun AlarmSettingScreen(
             viewModel.toggleAlarm(enabled)
         },
         onRequestExactAlarmPermission = {
-            startExactAlarmPermissionSettings(context)
+            onNavigateExactAlarmPermissionSettings()
+        },
+        onPinSettingClick = {
+            onNavigateToPinSetting()
         },
         modifier = modifier
     )
@@ -96,15 +96,4 @@ private fun showTimePickerDialog(
         minute,
         true // 24時間表示
     ).show()
-}
-
-/**
- * 正確なアラーム権限を設定するための設定画面を開く
- */
-@RequiresApi(Build.VERSION_CODES.S)
-private fun startExactAlarmPermissionSettings(context: Context) {
-    val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-        data = "package:${context.packageName}".toUri()
-    }
-    context.startActivity(intent)
 }
