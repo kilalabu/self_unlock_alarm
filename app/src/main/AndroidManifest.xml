@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
         android:name=".App"
@@ -19,6 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SelfUnlockAlarm"
         tools:targetApi="31">
+
         <activity
             android:name=".alarm.MainActivity"
             android:exported="true"
@@ -26,10 +30,24 @@
             android:theme="@style/Theme.SelfUnlockAlarm">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".unlock.UnlockActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:showWhenLocked="true"
+            android:theme="@style/Theme.SelfUnlockAlarm"
+            android:turnScreenOn="true">
+        </activity>
+
+        <service
+            android:name=".alarm.service.AlarmSoundService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback">
+        </service>
 
         <receiver
             android:name=".alarm.receiver.AlarmReceiver"
@@ -37,12 +55,9 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-                <!-- カスタムアクション -->
                 <action android:name="com.example.selfunlockAlarm.ACTION_ALARM" />
                 <action android:name="com.example.selfunlockAlarm.ACTION_STOP_ALARM" />
             </intent-filter>
         </receiver>
     </application>
-
 </manifest>
