@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.alarm.service
+package com.example.selfunlockalarm.feature.alarm.service
 
 import android.app.*
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.net.Uri
 import android.os.*
 import androidx.core.app.NotificationCompat
 import com.example.selfunlockalarm.R
-import com.example.selfunlockalarm.unlock.UnlockActivity
+import com.example.selfunlockalarm.feature.unlock.UnlockActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

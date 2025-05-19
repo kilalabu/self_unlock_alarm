@@ -1,8 +1,8 @@
-package com.example.selfunlockalarm.pin.viewmodel
+package com.example.selfunlockalarm.feature.pin.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.selfunlockalarm.alarm.AlarmUseCase
+import com.example.selfunlockalarm.feature.alarm.AlarmUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

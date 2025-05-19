@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.alarm.setting.ui
+package com.example.selfunlockalarm.feature.alarm.setting.ui
 
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.selfunlockalarm.alarm.setting.viewmodel.AlarmSettingUiState
+import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingUiState
 import java.util.Locale
 
 @Composable

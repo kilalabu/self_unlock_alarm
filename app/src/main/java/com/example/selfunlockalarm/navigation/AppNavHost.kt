@@ -9,10 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.selfunlockalarm.alarm.setting.ui.AlarmSettingScreen
-import com.example.selfunlockalarm.pin.ui.PinSettingScreen
-import com.example.selfunlockalarm.unlock.ui.UnlockScreen
-
+import com.example.selfunlockalarm.feature.alarm.setting.ui.AlarmSettingScreen
+import com.example.selfunlockalarm.feature.pinsetting.ui.PinSettingScreen
 
 sealed class AppDestination(val route: String) {
     /**
