@@ -23,7 +23,7 @@ class SystemAlarmScheduler @Inject constructor(
      */
     fun scheduleAlarm(hourOfDay: Int, minute: Int) {
         val alarmIntent = Intent(context, AlarmReceiver::class.java).apply {
-            Intent.setAction = AlarmReceiver.ACTION_ALARM
+            action = AlarmReceiver.ACTION_ALARM
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -94,7 +94,7 @@ class SystemAlarmScheduler @Inject constructor(
      */
     fun cancelAlarm() {
         val alarmIntent = Intent(context, AlarmReceiver::class.java).apply {
-            Intent.setAction = AlarmReceiver.ACTION_ALARM
+            action = AlarmReceiver.ACTION_ALARM
         }
 
         val pendingIntent = PendingIntent.getBroadcast(

@@ -24,7 +24,7 @@ class AlarmReceiver : BroadcastReceiver() {
         when (intent.action) {
             ACTION_ALARM -> {
                 val serviceIntent = Intent(context, AlarmSoundService::class.java).apply {
-                    Intent.setAction = AlarmSoundService.ACTION_START_ALARM
+                    action = AlarmSoundService.ACTION_START_ALARM
                 }
                 context.startForegroundService(serviceIntent)
             }

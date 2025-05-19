@@ -28,7 +28,7 @@ class UnlockActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding),
                         onUnlockSuccess = {
                             val intent = Intent(this, AlarmSoundService::class.java).apply {
-                                Intent.setAction = AlarmSoundService.ACTION_STOP_ALARM
+                                action = AlarmSoundService.ACTION_STOP_ALARM
                             }
                             startService(intent)
 
