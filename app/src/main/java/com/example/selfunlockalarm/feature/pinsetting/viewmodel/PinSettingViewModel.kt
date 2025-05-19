@@ -1,8 +1,8 @@
-package com.example.selfunlockalarm.feature.pin.viewmodel
+package com.example.selfunlockalarm.feature.pinsetting.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.selfunlockalarm.feature.alarm.AlarmUseCase
+import com.example.selfunlockalarm.data.repository.PinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PinSettingViewModel @Inject constructor(
-    private val alarmUseCase: AlarmUseCase
+    private val pinRepository: PinRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<PinSettingUiState>(PinSettingUiState.Loading)
     val uiState: StateFlow<PinSettingUiState> = _uiState.asStateFlow()
@@ -155,7 +155,7 @@ class PinSettingViewModel @Inject constructor(
 
     private fun savePinCode(pinCode: String) {
         viewModelScope.launch {
-            alarmUseCase.updatePinCode(pinCode)
+            pinRepository.updatePinCode(pinCode)
         }
     }
 

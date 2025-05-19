@@ -2,7 +2,7 @@ package com.example.selfunlockalarm.feature.unlock.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.selfunlockalarm.feature.alarm.AlarmUseCase
+import com.example.selfunlockalarm.data.repository.PinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UnlockViewModel @Inject constructor(
-    private val alarmUseCase: AlarmUseCase
+    private val pinRepository: PinRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UnlockUiState>(UnlockUiState.Loading)
     val uiState: StateFlow<UnlockUiState> = _uiState.asStateFlow()
@@ -26,7 +26,7 @@ class UnlockViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UnlockUiState.Ready(
                 inputPin = "",
-                correctPin = alarmUseCase.getPinCode(),
+                correctPin = pinRepository.getPinCode(),
                 verificationState = UnlockUiState.Ready.VerificationState.INITIAL
             )
         }
@@ -66,11 +66,12 @@ class UnlockViewModel @Inject constructor(
             if (currentState is UnlockUiState.Ready && currentState.inputPin.isNotEmpty()) {
                 // 失敗状態から入力再開する場合、inputPinはクリアされている想定
                 // もし失敗後も入力PINが残っている仕様なら、その状態からの削除も考慮
-                val currentInput = if (currentState.verificationState == UnlockUiState.Ready.VerificationState.FAILURE) {
-                    "" // 失敗後はクリアされているはずなので、ここでの削除は実質空文字に対して行われる
-                } else {
-                    currentState.inputPin
-                }
+                val currentInput =
+                    if (currentState.verificationState == UnlockUiState.Ready.VerificationState.FAILURE) {
+                        "" // 失敗後はクリアされているはずなので、ここでの削除は実質空文字に対して行われる
+                    } else {
+                        currentState.inputPin
+                    }
 
                 if (currentInput.isNotEmpty()) {
                     currentState.copy(
