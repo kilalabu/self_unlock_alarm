@@ -27,93 +27,126 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.app.theme.TextBlue
+import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingUiState
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingViewModel
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmSettingScreen(
-    modifier: Modifier = Modifier,
     viewModel: AlarmSettingViewModel = hiltViewModel(),
     onNavigateExactAlarmPermissionSettings: () -> Unit,
     onNavigateToPinSetting: () -> Unit
 ) {
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+
+    AlarmSettingScreen(
+        uiState = uiState,
+        onNavigateExactAlarmPermissionSettings = onNavigateExactAlarmPermissionSettings,
+        onNavigateToPinSetting = onNavigateToPinSetting,
+        onUpdateNotificationPermissionState = { isGranted ->
+            viewModel.updateNotificationPermissionState(isGranted)
+        },
+        onUpdateAlarmTime = { hour, minute ->
+            viewModel.updateAlarmTime(hour, minute)
+        },
+        onToggleAlarm = { enabled ->
+            viewModel.toggleAlarm(enabled)
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AlarmSettingScreen(
+    uiState: AlarmSettingUiState,
+    onNavigateExactAlarmPermissionSettings: () -> Unit,
+    onNavigateToPinSetting: () -> Unit,
+    onUpdateNotificationPermissionState: (Boolean) -> Unit,
+    onUpdateAlarmTime: (hour: Int, minute: Int) -> Unit,
+    onToggleAlarm: (Boolean) -> Unit,
+) {
+    val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
 
-    // 通知権限のリクエスト
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        viewModel.updateNotificationPermissionState(isGranted)
+        onUpdateNotificationPermissionState(isGranted)
     }
 
-    // 画面表示時に通知権限をチェック
     LaunchedEffect(key1 = Unit) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val permissionState = ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.POST_NOTIFICATIONS
             )
-
-            viewModel.updateNotificationPermissionState(
-                permissionState == PackageManager.PERMISSION_GRANTED
-            )
-
+            onUpdateNotificationPermissionState(permissionState == PackageManager.PERMISSION_GRANTED)
             if (permissionState != PackageManager.PERMISSION_GRANTED) {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         } else {
-            // Android 13未満は通知権限が必要ない
-            viewModel.updateNotificationPermissionState(true)
+            onUpdateNotificationPermissionState(true)
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {},
-                actions = {
-                    IconButton(onClick = { showMenu = !showMenu }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "メニュー"
-                        )
+    SelfUnlockAlarmTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {},
+                    actions = {
+                        IconButton(
+                            onClick = { showMenu = !showMenu },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "メニュー",
+                                tint = TextBlue
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text("PINコード設定")
+                                },
+                                onClick = {
+                                    showMenu = false
+                                    onNavigateToPinSetting()
+                                }
+                            )
+                        }
                     }
-                    DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("PINコード設定") },
-                            onClick = {
-                                showMenu = false
-                                onNavigateToPinSetting()
-                            }
-                        )
+                )
+            }
+        ) { innerPadding ->
+            AlarmSettingContent(
+                uiState = uiState,
+                onTimeClick = {
+                    showTimePickerDialog(context) { h, m ->
+                        onUpdateAlarmTime(h, m)
                     }
-                }
+                },
+                onToggleAlarm = { enabled ->
+                    onToggleAlarm(enabled)
+                },
+                onRequestExactAlarmPermission = {
+                    onNavigateExactAlarmPermissionSettings()
+                },
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(16.dp)
             )
         }
-    ) { innerPadding ->
-        AlarmSettingContent(
-            uiState = uiState,
-            onTimeClick = {
-                showTimePickerDialog(context) { h, m ->
-                    viewModel.updateAlarmTime(h, m)
-                }
-            },
-            onToggleAlarm = { enabled ->
-                viewModel.toggleAlarm(enabled)
-            },
-            onRequestExactAlarmPermission = {
-                onNavigateExactAlarmPermissionSettings()
-            },
-            modifier = modifier.padding(innerPadding)
-        )
     }
 }
 
@@ -137,4 +170,23 @@ private fun showTimePickerDialog(
         minute,
         true // 24時間表示
     ).show()
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun AlarmSettingScreenPreview() {
+    AlarmSettingScreen(
+        uiState = AlarmSettingUiState(
+            selectedHour = 7,
+            selectedMinute = 30,
+            isAlarmEnabled = true,
+            canScheduleExactAlarms = false,
+        ),
+        onNavigateExactAlarmPermissionSettings = {},
+        onNavigateToPinSetting = {},
+        onUpdateNotificationPermissionState = {},
+        onUpdateAlarmTime = { _, _ -> },
+        onToggleAlarm = {}
+    )
+
 }

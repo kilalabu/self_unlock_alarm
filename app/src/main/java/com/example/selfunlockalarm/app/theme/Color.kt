@@ -2,10 +2,30 @@ package com.example.selfunlockalarm.app.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Gradient Colors from Screenshot
+val LightBlue = Color(0xFF3B82F6) // approx blue-500 / blue-600
+val LightPurple = Color(0xFF8B5CF6) // approx purple-400 / purple-500
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val GradientStartBlue = LightBlue
+val GradientEndPurple = LightPurple
+
+val TextGradientStart = Color(0xFF2563EB) // approx blue-600
+val TextGradientEnd = LightPurple
+
+// Background gradient from-slate-100 via-blue-50 to-purple-50
+val BgGradientVia = Color(0xFFEFF6FF)   // blue-50
+val BgGradientEnd = Color(0xFFFAF5FF)   // purple-50
+
+// Card Background
+val CardBg = Color(0xFFFFFFFF)
+
+// Other UI Colors
+val TextBlue = Color(0xFF2563EB)       // blue-600 for text
+val TextWhite = Color.White
+val BorderBlueLight = Color(0xFFDBEAFE) // blue-100 for border
+
+// Material Theme Colors (using single colors, gradients will be applied via Brush)
+val MdBluePrimary = LightBlue
+val MdPurpleSecondary = LightPurple
+val MdBackground = Color.White // Default background
+val MdSurface = Color.White    // Default surface
