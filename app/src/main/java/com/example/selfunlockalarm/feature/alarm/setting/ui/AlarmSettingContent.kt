@@ -32,7 +32,6 @@ fun AlarmSettingContent(
     onTimeClick: () -> Unit,
     onToggleAlarm: (Boolean) -> Unit,
     onRequestExactAlarmPermission: () -> Unit,
-    onPinSettingClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -64,7 +63,12 @@ fun AlarmSettingContent(
                 Spacer(Modifier.height(24.dp))
 
                 Text(
-                    text = String.format(Locale.ROOT, "%02d:%02d", uiState.selectedHour, uiState.selectedMinute),
+                    text = String.format(
+                        Locale.ROOT,
+                        "%02d:%02d",
+                        uiState.selectedHour,
+                        uiState.selectedMinute
+                    ),
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -102,16 +106,6 @@ fun AlarmSettingContent(
                         Text("正確なアラーム権限を設定")
                     }
                 }
-                
-                Spacer(Modifier.height(16.dp))
-                
-                // PINコード設定ボタン
-                Button(
-                    onClick = { onPinSettingClick() },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("PINコード設定")
-                }
             }
         }
     }
@@ -131,7 +125,6 @@ private fun AlarmSettingContent_Preview() {
         onTimeClick = {},
         onToggleAlarm = {},
         onRequestExactAlarmPermission = {},
-        onPinSettingClick = {},
         modifier = Modifier.fillMaxSize()
     )
 }
