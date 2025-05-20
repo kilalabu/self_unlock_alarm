@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,11 +37,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.selfunlockalarm.app.theme.MdPurpleSecondary
+import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.app.theme.TextGradientEnd
+import com.example.selfunlockalarm.app.theme.TextGradientStart
 import com.example.selfunlockalarm.feature.pinsetting.viewmodel.PinSettingUiState
 import com.example.selfunlockalarm.feature.pinsetting.viewmodel.PinSettingViewModel
 import kotlinx.coroutines.delay
@@ -65,39 +73,40 @@ fun PinSettingScreen(
             }
         }
     }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("PINコード設定") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "戻る")
+    SelfUnlockAlarmTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("PINコード設定") },
+                    navigationIcon = {
+                        IconButton(onClick = onNavigateBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "戻る")
+                        }
+                    }
+                )
+            }
+        ) { innerPadding ->
+            when (val currentUiState = uiState) {
+                PinSettingUiState.Loading -> {
+                    Box(
+                        modifier = modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
                     }
                 }
-            )
-        }
-    ) { innerPadding ->
-        when (val currentUiState = uiState) {
-            PinSettingUiState.Loading -> {
-                Box(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
 
-            is PinSettingUiState.Ready -> {
-                PinSettingContent(
-                    uiState = currentUiState,
-                    onDigitClick = { digit -> viewModel.onDigitEntered(digit) },
-                    onBackspaceClick = { viewModel.onBackspace() },
-                    onResetConfirmPin = { viewModel.resetConfirmPin() },
-                    modifier = modifier.padding(innerPadding)
-                )
+                is PinSettingUiState.Ready -> {
+                    PinSettingContent(
+                        uiState = currentUiState,
+                        onDigitClick = { digit -> viewModel.onDigitEntered(digit) },
+                        onBackspaceClick = { viewModel.onBackspace() },
+                        onResetConfirmPin = { viewModel.resetConfirmPin() },
+                        modifier = modifier.padding(innerPadding)
+                    )
+                }
             }
         }
     }
@@ -151,7 +160,11 @@ private fun PinSettingContent(
 
             Button(
                 onClick = onResetConfirmPin,
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier.padding(vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MdPurpleSecondary,
+                    contentColor = Color.White
+                ),
             ) {
                 Text("もう一度入力する")
             }
@@ -186,14 +199,23 @@ private fun PinDisplay(pinLength: Int, maxLength: Int = 4) {
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         repeat(maxLength) { index ->
+            val dotModifier = if (index < pinLength) {
+                Modifier.background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(TextGradientStart, TextGradientEnd)
+                    ),
+                    shape = CircleShape
+                )
+            } else {
+                Modifier.background(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                    shape = CircleShape
+                )
+            }
             Box(
                 modifier = Modifier
                     .size(24.dp)
-                    .background(
-                        color = if (index < pinLength) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
-                        shape = CircleShape
-                    )
+                    .then(dotModifier)
             )
         }
     }
@@ -215,7 +237,7 @@ private fun NumericKeypad(
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier
-                .width(280.dp) // keypadの幅を固定
+                .width(280.dp)
                 .align(Alignment.Center),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -225,12 +247,12 @@ private fun NumericKeypad(
                 val buttonModifier = Modifier.size(width = 80.dp, height = 64.dp)
 
                 when (buttonText) {
-                    "" -> Spacer(modifier = buttonModifier) // 空きスペースも同じサイズを占める
+                    "" -> Spacer(modifier = buttonModifier)
                     "⌫" -> {
                         OutlinedButton(
                             onClick = onBackspaceClick,
                             modifier = buttonModifier,
-                            contentPadding = PaddingValues(0.dp) // アイコンが大きく見えるように調整
+                            contentPadding = PaddingValues(0.dp)
                         ) {
                             Icon(
                                 Icons.Filled.Clear,
@@ -243,9 +265,29 @@ private fun NumericKeypad(
                     else -> {
                         Button(
                             onClick = { onDigitClick(buttonText) },
-                            modifier = buttonModifier
+                            modifier = buttonModifier,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Transparent,
+                                contentColor = Color.White
+                            ),
+                            contentPadding = PaddingValues(0.dp)
                         ) {
-                            Text(buttonText, fontSize = 20.sp)
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        brush = Brush.horizontalGradient(
+                                            colors = listOf(TextGradientStart, TextGradientEnd)
+                                        ),
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    buttonText,
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
                         }
                     }
                 }
@@ -311,10 +353,12 @@ fun PinSettingScreen_CompletePreview() {
         confirmPin = "5678",
         stage = PinSettingUiState.Ready.Stage.COMPLETE
     )
-    PinSettingContent(
-        uiState = sampleState,
-        onDigitClick = {},
-        onBackspaceClick = {},
-        onResetConfirmPin = {}
-    )
+    SelfUnlockAlarmTheme {
+        PinSettingContent(
+            uiState = sampleState,
+            onDigitClick = {},
+            onBackspaceClick = {},
+            onResetConfirmPin = {}
+        )
+    }
 }

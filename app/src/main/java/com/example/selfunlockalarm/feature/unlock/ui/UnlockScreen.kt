@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,10 +32,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.app.theme.TextGradientEnd
+import com.example.selfunlockalarm.app.theme.TextGradientStart
 import com.example.selfunlockalarm.feature.unlock.viewmodel.UnlockUiState
 import com.example.selfunlockalarm.feature.unlock.viewmodel.UnlockViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -149,15 +156,23 @@ private fun PinDisplay(pinLength: Int, maxLength: Int = 4) {
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         repeat(maxLength) { index ->
+            val dotModifier = if (index < pinLength) {
+                Modifier.background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(TextGradientStart, TextGradientEnd) // グラデーション色
+                    ),
+                    shape = CircleShape
+                )
+            } else {
+                Modifier.background(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                    shape = CircleShape
+                )
+            }
             Box(
                 modifier = Modifier
                     .size(24.dp)
-                    // .aspectRatio(1f) // 正方形にするなら有効
-                    .background(
-                        color = if (index < pinLength) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
-                        shape = CircleShape // 円形にする場合
-                    )
+                    .then(dotModifier)
             )
         }
     }
@@ -190,12 +205,12 @@ private fun NumericKeypad(
                 val buttonModifier = Modifier.size(width = 80.dp, height = 64.dp)
 
                 when (buttonText) {
-                    "" -> Spacer(modifier = buttonModifier) // 空きスペースも同じサイズを占める
+                    "" -> Spacer(modifier = buttonModifier)
                     "⌫" -> {
                         OutlinedButton(
                             onClick = onBackspaceClick,
                             modifier = buttonModifier,
-                            contentPadding = PaddingValues(0.dp) // アイコンが大きく見えるように調整
+                            contentPadding = PaddingValues(0.dp)
                         ) {
                             Icon(
                                 Icons.Filled.Clear,
@@ -204,13 +219,32 @@ private fun NumericKeypad(
                             )
                         }
                     }
-
                     else -> {
                         Button(
                             onClick = { onDigitClick(buttonText) },
-                            modifier = buttonModifier
+                            modifier = buttonModifier,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Transparent,
+                                contentColor = Color.White
+                            ),
+                            contentPadding = PaddingValues(0.dp)
                         ) {
-                            Text(buttonText, fontSize = 20.sp)
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        brush = Brush.horizontalGradient(
+                                            colors = listOf(TextGradientStart, TextGradientEnd)
+                                        ),
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    buttonText,
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
                         }
                     }
                 }
@@ -222,21 +256,38 @@ private fun NumericKeypad(
 @Preview(showBackground = true)
 @Composable
 fun UnlockScreenReadyPreview() {
-    PinEntryContent(
-        inputPin = "12",
-        verificationState = UnlockUiState.Ready.VerificationState.INITIAL,
-        onDigitClick = {},
-        onBackspaceClick = {}
-    )
+    SelfUnlockAlarmTheme {
+        PinEntryContent(
+            inputPin = "12",
+            verificationState = UnlockUiState.Ready.VerificationState.INITIAL, // INITIALの代わりにVERIFYINGを使用
+            onDigitClick = {},
+            onBackspaceClick = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun UnlockScreenErrorPreview() {
-    PinEntryContent(
-        inputPin = "1234",
-        verificationState = UnlockUiState.Ready.VerificationState.FAILURE,
-        onDigitClick = {},
-        onBackspaceClick = {}
-    )
+    SelfUnlockAlarmTheme {
+        PinEntryContent(
+            inputPin = "1234",
+            verificationState = UnlockUiState.Ready.VerificationState.FAILURE,
+            onDigitClick = {},
+            onBackspaceClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun UnlockScreenSuccessPreview() {
+    SelfUnlockAlarmTheme {
+        PinEntryContent(
+            inputPin = "1234",
+            verificationState = UnlockUiState.Ready.VerificationState.SUCCESS,
+            onDigitClick = {},
+            onBackspaceClick = {}
+        )
+    }
 }
