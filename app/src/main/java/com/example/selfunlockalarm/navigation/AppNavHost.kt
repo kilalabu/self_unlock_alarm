@@ -11,8 +11,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.selfunlockalarm.feature.alarm.setting.ui.AlarmSettingScreen
 import com.example.selfunlockalarm.feature.pinsetting.ui.PinSettingScreen
+import com.example.selfunlockalarm.feature.launcher.ui.LauncherScreen
 
 sealed class AppDestination(val route: String) {
+    /**
+     * アプリの起動画面
+     */
+    data object Launcher : AppDestination("launcher")
+
     /**
      * アラーム設定画面
      */
@@ -28,13 +34,17 @@ sealed class AppDestination(val route: String) {
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = AppDestination.AlarmSetting.route
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = AppDestination.Launcher.route,
         modifier = modifier
     ) {
+        // ルーティング画面
+        composable(route = AppDestination.Launcher.route) {
+            LauncherScreen(navController = navController)
+        }
+
         // アラーム設定画面
         composable(route = AppDestination.AlarmSetting.route) {
             AlarmSettingScreen(
@@ -57,6 +67,12 @@ fun AppNavHost(
             PinSettingScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onPinSetSuccessfully = {
+                    navController.navigate(AppDestination.AlarmSetting.route) {
+                        // バックスタックから削除してAlarmSetting画面へ
+                        popUpTo(AppDestination.Launcher.route) { inclusive = true }
+                    }
                 }
             )
         }

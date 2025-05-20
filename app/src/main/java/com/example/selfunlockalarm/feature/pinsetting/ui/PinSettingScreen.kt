@@ -51,7 +51,8 @@ import kotlinx.coroutines.flow.collectLatest
 fun PinSettingScreen(
     modifier: Modifier = Modifier,
     viewModel: PinSettingViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit = {}
+    onNavigateBack: () -> Unit,
+    onPinSetSuccessfully: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -60,7 +61,7 @@ fun PinSettingScreen(
             if (state is PinSettingUiState.Ready && state.stage == PinSettingUiState.Ready.Stage.COMPLETE) {
                 // PIN設定完了後、少し待ってから前の画面に戻る
                 delay(1500)
-                onNavigateBack()
+                onPinSetSuccessfully()
             }
         }
     }
