@@ -1,8 +1,8 @@
-package com.example.selfunlockalarm.alarm
+package com.example.selfunlockalarm.feature.alarm
 
-import com.example.selfunlockalarm.alarm.service.SystemAlarmScheduler
 import com.example.selfunlockalarm.data.repository.AlarmRepository
 import com.example.selfunlockalarm.domain.model.AlarmSetting
+import com.example.selfunlockalarm.feature.alarm.service.SystemAlarmScheduler
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

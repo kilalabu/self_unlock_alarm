@@ -57,8 +57,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // DataStore Proto
+    // DataStore
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.protobuf.kotlin.lite)
 
     testImplementation(libs.junit)

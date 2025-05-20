@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.unlock.ui
+package com.example.selfunlockalarm.feature.unlock.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -34,8 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfunlockalarm.unlock.viewmodel.UnlockUiState
-import com.example.selfunlockalarm.unlock.viewmodel.UnlockViewModel
+import com.example.selfunlockalarm.feature.unlock.viewmodel.UnlockUiState
+import com.example.selfunlockalarm.feature.unlock.viewmodel.UnlockViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -155,7 +156,7 @@ private fun PinDisplay(pinLength: Int, maxLength: Int = 4) {
                     .background(
                         color = if (index < pinLength) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
-                        shape = androidx.compose.foundation.shape.CircleShape // 円形にする場合
+                        shape = CircleShape // 円形にする場合
                     )
             )
         }

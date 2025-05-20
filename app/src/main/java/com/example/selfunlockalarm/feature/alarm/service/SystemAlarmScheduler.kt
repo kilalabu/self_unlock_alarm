@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.alarm.service
+package com.example.selfunlockalarm.feature.alarm.service
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.Toast
-import com.example.selfunlockalarm.alarm.receiver.AlarmReceiver
+import com.example.selfunlockalarm.feature.alarm.receiver.AlarmReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import javax.inject.Inject

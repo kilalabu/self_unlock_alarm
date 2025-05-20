@@ -24,7 +24,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".alarm.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SelfUnlockAlarm">
@@ -35,7 +35,7 @@
         </activity>
 
         <activity
-            android:name=".unlock.UnlockActivity"
+            android:name=".feature.unlock.UnlockActivity"
             android:exported="false"
             android:launchMode="singleTop"
             android:showWhenLocked="true"
@@ -44,13 +44,13 @@
         </activity>
 
         <service
-            android:name=".alarm.service.AlarmSoundService"
+            android:name=".feature.alarm.service.AlarmSoundService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
         </service>
 
         <receiver
-            android:name=".alarm.receiver.AlarmReceiver"
+            android:name=".feature.alarm.receiver.AlarmReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

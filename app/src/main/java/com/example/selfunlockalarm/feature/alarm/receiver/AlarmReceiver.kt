@@ -1,11 +1,11 @@
-package com.example.selfunlockalarm.alarm.receiver
+package com.example.selfunlockalarm.feature.alarm.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.selfunlockalarm.alarm.AlarmUseCase
-import com.example.selfunlockalarm.alarm.service.AlarmSoundService
-import com.example.selfunlockalarm.alarm.service.SystemAlarmScheduler
+import com.example.selfunlockalarm.feature.alarm.AlarmUseCase
+import com.example.selfunlockalarm.feature.alarm.service.AlarmSoundService
+import com.example.selfunlockalarm.feature.alarm.service.SystemAlarmScheduler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
