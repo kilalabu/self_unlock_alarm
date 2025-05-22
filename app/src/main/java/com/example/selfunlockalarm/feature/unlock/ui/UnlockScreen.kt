@@ -11,8 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfunlockalarm.uicommon.theme.ErrorRed
-import com.example.selfunlockalarm.uicommon.theme.MdBluePrimary
+import com.example.selfunlockalarm.uicommon.theme.AppThemeColor
 import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
 import com.example.selfunlockalarm.uicommon.component.PinEntry
 import com.example.selfunlockalarm.feature.unlock.viewmodel.UnlockUiState
@@ -79,9 +78,9 @@ private fun PinEntryContent(
     }
 
     val statusColor = when (verificationState) {
-        UnlockUiState.Ready.VerificationState.FAILURE -> ErrorRed
+        UnlockUiState.Ready.VerificationState.FAILURE -> AppThemeColor.ErrorRed
         UnlockUiState.Ready.VerificationState.SUCCESS,
-        UnlockUiState.Ready.VerificationState.INITIAL -> MdBluePrimary
+        UnlockUiState.Ready.VerificationState.INITIAL -> AppThemeColor.MdBluePrimary
     }
 
     PinEntry(

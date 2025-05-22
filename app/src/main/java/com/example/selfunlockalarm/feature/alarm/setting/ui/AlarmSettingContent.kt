@@ -41,17 +41,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.selfunlockalarm.uicommon.theme.BgGradientEnd
-import com.example.selfunlockalarm.uicommon.theme.BgGradientVia
-import com.example.selfunlockalarm.uicommon.theme.BorderBlueLight
-import com.example.selfunlockalarm.uicommon.theme.CardBg
-import com.example.selfunlockalarm.uicommon.theme.GradientEndPurple
-import com.example.selfunlockalarm.uicommon.theme.GradientStartBlue
-import com.example.selfunlockalarm.uicommon.theme.TextBlue
-import com.example.selfunlockalarm.uicommon.theme.TextGradientEnd
-import com.example.selfunlockalarm.uicommon.theme.TextGradientStart
-import com.example.selfunlockalarm.uicommon.theme.TextWhite
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingUiState
+import com.example.selfunlockalarm.uicommon.theme.AppThemeColor
 import java.util.Locale
 
 @Composable
@@ -69,7 +60,7 @@ fun AlarmSettingContent(
             .fillMaxWidth(),
         shape = mainCardShape,
         colors = CardDefaults.cardColors(
-            containerColor = CardBg
+            containerColor = AppThemeColor.CardBg
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
@@ -80,7 +71,10 @@ fun AlarmSettingContent(
                 .fillMaxWidth()
                 .background(
                     brush = Brush.horizontalGradient(
-                        colors = listOf(GradientStartBlue, GradientEndPurple)
+                        colors = listOf(
+                            AppThemeColor.GradientStartBlue,
+                            AppThemeColor.GradientEndPurple
+                        )
                     )
                 )
                 .padding(vertical = 20.dp),
@@ -90,7 +84,7 @@ fun AlarmSettingContent(
                 text = "アラーム設定",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = TextWhite
+                color = AppThemeColor.TextWhite
             )
         }
 
@@ -110,8 +104,8 @@ fun AlarmSettingContent(
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
-                                BgGradientVia.copy(alpha = 0.7f),
-                                BgGradientEnd.copy(alpha = 0.7f)
+                                AppThemeColor.BgGradientVia.copy(alpha = 0.7f),
+                                AppThemeColor.BgGradientEnd.copy(alpha = 0.7f)
                             )
                         )
                     )
@@ -128,7 +122,10 @@ fun AlarmSettingContent(
                     fontWeight = FontWeight.Bold,
                     style = LocalTextStyle.current.copy(
                         brush = Brush.horizontalGradient(
-                            colors = listOf(TextGradientStart, TextGradientEnd)
+                            colors = listOf(
+                                AppThemeColor.TextGradientStart,
+                                AppThemeColor.TextGradientEnd
+                            )
                         ),
                         letterSpacing = (-2).sp
                     )
@@ -150,7 +147,10 @@ fun AlarmSettingContent(
                         .fillMaxSize()
                         .background(
                             brush = Brush.horizontalGradient(
-                                colors = listOf(GradientStartBlue, GradientEndPurple)
+                                colors = listOf(
+                                    AppThemeColor.GradientStartBlue,
+                                    AppThemeColor.GradientEndPurple
+                                )
                             )
                         ),
                     contentAlignment = Alignment.Center
@@ -159,13 +159,13 @@ fun AlarmSettingContent(
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = "時間を設定",
-                            tint = TextWhite,
+                            tint = AppThemeColor.TextWhite,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
                             text = "時間を設定",
-                            color = TextWhite,
+                            color = AppThemeColor.TextWhite,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -181,8 +181,8 @@ fun AlarmSettingContent(
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
-                                BgGradientVia.copy(alpha = 0.7f),
-                                BgGradientEnd.copy(alpha = 0.7f)
+                                AppThemeColor.BgGradientVia.copy(alpha = 0.7f),
+                                AppThemeColor.BgGradientEnd.copy(alpha = 0.7f)
                             )
                         )
                     )
@@ -200,7 +200,10 @@ fun AlarmSettingContent(
                             .clip(CircleShape)
                             .background(
                                 Brush.horizontalGradient(
-                                    colors = listOf(GradientStartBlue, GradientEndPurple)
+                                    colors = listOf(
+                                        AppThemeColor.GradientStartBlue,
+                                        AppThemeColor.GradientEndPurple
+                                    )
                                 )
                             ),
                         contentAlignment = Alignment.Center
@@ -208,7 +211,7 @@ fun AlarmSettingContent(
                         Icon(
                             imageVector = Icons.Default.Notifications,
                             contentDescription = "アラームアイコン",
-                            tint = TextWhite,
+                            tint = AppThemeColor.TextWhite,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -222,8 +225,8 @@ fun AlarmSettingContent(
                     checked = uiState.isAlarmEnabled,
                     onCheckedChange = onToggleAlarm,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = TextWhite,
-                        checkedTrackColor = GradientStartBlue,
+                        checkedThumbColor = AppThemeColor.TextWhite,
+                        checkedTrackColor = AppThemeColor.GradientStartBlue,
                     )
                 )
             }
@@ -236,10 +239,10 @@ fun AlarmSettingContent(
                         .fillMaxWidth()
                         .height(60.dp),
                     shape = RoundedCornerShape(16.dp),
-                    border = BorderStroke(2.dp, BorderBlueLight),
+                    border = BorderStroke(2.dp, AppThemeColor.BorderBlueLight),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.White,
-                        contentColor = TextBlue
+                        contentColor = AppThemeColor.TextBlue
                     )
                 ) {
                     Text(

@@ -12,27 +12,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = MdBluePrimary,
-    secondary = MdPurpleSecondary,
-    tertiary = MdPurpleSecondary,
+    primary = AppThemeColor.MdBluePrimary,
+    secondary = AppThemeColor.MdPurpleSecondary,
+    tertiary = AppThemeColor.MdPurpleSecondary,
     background = Color(0xFF121212),
     surface = Color(0xFF121212)
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = MdBluePrimary,
-    secondary = MdPurpleSecondary,
-    tertiary = MdPurpleSecondary, // Or another accent
-    background = MdBackground,
-    surface = MdSurface,
-    onPrimary = TextWhite,
-    onSecondary = TextWhite,
-    onTertiary = TextWhite,
+    primary = AppThemeColor.MdBluePrimary,
+    secondary = AppThemeColor.MdPurpleSecondary,
+    tertiary = AppThemeColor.MdPurpleSecondary, // Or another accent
+    background = AppThemeColor.MdBackground,
+    surface = AppThemeColor.MdSurface,
+    onPrimary = AppThemeColor.TextWhite,
+    onSecondary = AppThemeColor.TextWhite,
+    onTertiary = AppThemeColor.TextWhite,
     onBackground = Color(0xFF1C1B1F), // Default dark text on light background
     onSurface = Color(0xFF1C1B1F),   // Default dark text on light surface
-    primaryContainer = MdBluePrimary, // For Switch checked color
-    surfaceVariant = CardBg, // For Card background if needed directly
-    outline = BorderBlueLight // For OutlinedButton border
+    primaryContainer = AppThemeColor.MdBluePrimary, // For Switch checked color
+    surfaceVariant = AppThemeColor.CardBg, // For Card background if needed directly
+    outline = AppThemeColor.BorderBlueLight // For OutlinedButton border
 )
 
 @Composable

@@ -29,10 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
-import com.example.selfunlockalarm.uicommon.theme.TextBlue
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingUiState
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingViewModel
+import com.example.selfunlockalarm.uicommon.theme.AppThemeColor
+import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,7 +113,7 @@ private fun AlarmSettingScreen(
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
                                 contentDescription = "メニュー",
-                                tint = TextBlue
+                                tint = AppThemeColor.TextBlue
                             )
                         }
                         DropdownMenu(
