@@ -34,11 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.selfunlockalarm.uicommon.theme.GradientEndPurple
-import com.example.selfunlockalarm.uicommon.theme.GradientStartBlue
-import com.example.selfunlockalarm.uicommon.theme.MdBluePrimary
+import com.example.selfunlockalarm.uicommon.theme.AppThemeColor
 import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
-import com.example.selfunlockalarm.uicommon.theme.TextWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +65,10 @@ fun TimePickerDialog(
                         .fillMaxWidth()
                         .background(
                             brush = Brush.horizontalGradient(
-                                colors = listOf(GradientStartBlue, GradientEndPurple)
+                                colors = listOf(
+                                    AppThemeColor.GradientStartBlue,
+                                    AppThemeColor.GradientEndPurple
+                                )
                             )
                         )
                         .padding(vertical = 16.dp),
@@ -76,7 +76,7 @@ fun TimePickerDialog(
                 ) {
                     Text(
                         text = "時間を選択",
-                        color = TextWhite,
+                        color = AppThemeColor.TextWhite,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -100,9 +100,12 @@ fun TimePickerDialog(
                             .weight(1f)
                             .height(48.dp),
                         shape = RoundedCornerShape(50),
-                        border = BorderStroke(1.5.dp, MdBluePrimary.copy(alpha = 0.7f)),
+                        border = BorderStroke(
+                            1.5.dp,
+                            AppThemeColor.MdBluePrimary.copy(alpha = 0.7f)
+                        ),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MdBluePrimary
+                            contentColor = AppThemeColor.MdBluePrimary
                         )
                     ) {
                         Text("キャンセル", fontSize = 16.sp)
@@ -116,7 +119,7 @@ fun TimePickerDialog(
                             .clip(RoundedCornerShape(50)),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
-                            contentColor = TextWhite
+                            contentColor = AppThemeColor.TextWhite
                         ),
                         contentPadding = PaddingValues()
                     ) {
@@ -125,7 +128,10 @@ fun TimePickerDialog(
                                 .fillMaxSize()
                                 .background(
                                     brush = Brush.horizontalGradient(
-                                        colors = listOf(GradientStartBlue, GradientEndPurple)
+                                        colors = listOf(
+                                            AppThemeColor.GradientStartBlue,
+                                            AppThemeColor.GradientEndPurple
+                                        )
                                     )
                                 ),
                             contentAlignment = Alignment.Center

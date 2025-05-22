@@ -35,9 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.selfunlockalarm.uicommon.theme.ErrorRed
-import com.example.selfunlockalarm.uicommon.theme.TextGradientEnd
-import com.example.selfunlockalarm.uicommon.theme.TextGradientStart
+import com.example.selfunlockalarm.uicommon.theme.AppThemeColor
 
 @Composable
 fun PinEntry(
@@ -93,7 +91,7 @@ private fun PinDisplay(pinLength: Int, maxLength: Int = 4) {
             val dotModifier = if (index < pinLength) {
                 Modifier.background(
                     brush = Brush.horizontalGradient(
-                        colors = listOf(TextGradientStart, TextGradientEnd)
+                        colors = listOf(AppThemeColor.TextGradientStart, AppThemeColor.TextGradientEnd)
                     ),
                     shape = CircleShape
                 )
@@ -168,7 +166,7 @@ private fun NumericKeypad(
                                     .fillMaxSize()
                                     .background(
                                         brush = Brush.horizontalGradient(
-                                            colors = listOf(TextGradientStart, TextGradientEnd)
+                                            colors = listOf(AppThemeColor.TextGradientStart, AppThemeColor.TextGradientEnd)
                                         ),
                                     ),
                                 contentAlignment = Alignment.Center
@@ -196,7 +194,7 @@ private fun PinEntryPreview() {
         onDigitClick = {},
         onBackspaceClick = {},
         statusMessage = null,
-        statusMessageColor = ErrorRed,
+        statusMessageColor = AppThemeColor.ErrorRed,
     )
 }
 
@@ -209,6 +207,6 @@ private fun PinEntryPreviewError() {
         onDigitClick = {},
         onBackspaceClick = {},
         statusMessage = "PINコードが違います",
-        statusMessageColor = ErrorRed,
+        statusMessageColor = AppThemeColor.ErrorRed,
     )
 }

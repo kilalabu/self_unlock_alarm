@@ -27,6 +27,8 @@ class AlarmReceiver : BroadcastReceiver() {
                     action = AlarmSoundService.ACTION_START_ALARM
                 }
                 context.startForegroundService(serviceIntent)
+                // 次の日のアラームを再設定
+                rescheduleAlarmIfNeeded()
             }
 
             // デバイスが再起動されたときにアラームを再設定
