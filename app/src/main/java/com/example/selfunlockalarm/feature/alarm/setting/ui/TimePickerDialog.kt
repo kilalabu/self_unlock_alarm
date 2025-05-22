@@ -34,11 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.selfunlockalarm.app.theme.GradientEndPurple
-import com.example.selfunlockalarm.app.theme.GradientStartBlue
-import com.example.selfunlockalarm.app.theme.MdBluePrimary
-import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
-import com.example.selfunlockalarm.app.theme.TextWhite
+import com.example.selfunlockalarm.uicommon.theme.GradientEndPurple
+import com.example.selfunlockalarm.uicommon.theme.GradientStartBlue
+import com.example.selfunlockalarm.uicommon.theme.MdBluePrimary
+import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.uicommon.theme.TextWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

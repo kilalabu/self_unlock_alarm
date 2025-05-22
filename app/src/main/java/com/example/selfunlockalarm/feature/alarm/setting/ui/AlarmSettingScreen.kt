@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
-import com.example.selfunlockalarm.app.theme.TextBlue
+import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.uicommon.theme.TextBlue
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingUiState
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingViewModel
 

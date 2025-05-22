@@ -35,9 +35,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.selfunlockalarm.app.theme.ErrorRed
-import com.example.selfunlockalarm.app.theme.TextGradientEnd
-import com.example.selfunlockalarm.app.theme.TextGradientStart
+import com.example.selfunlockalarm.uicommon.theme.ErrorRed
+import com.example.selfunlockalarm.uicommon.theme.TextGradientEnd
+import com.example.selfunlockalarm.uicommon.theme.TextGradientStart
 
 @Composable
 fun PinEntry(

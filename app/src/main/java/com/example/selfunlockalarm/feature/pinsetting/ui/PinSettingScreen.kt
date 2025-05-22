@@ -20,9 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfunlockalarm.app.theme.ErrorRed
-import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
-import com.example.selfunlockalarm.app.theme.TextBlue
+import com.example.selfunlockalarm.uicommon.theme.ErrorRed
+import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.uicommon.theme.TextBlue
 import com.example.selfunlockalarm.uicommon.component.PinEntry
 import com.example.selfunlockalarm.feature.pinsetting.viewmodel.PinSettingUiState
 import com.example.selfunlockalarm.feature.pinsetting.viewmodel.PinSettingViewModel

@@ -41,16 +41,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.selfunlockalarm.app.theme.BgGradientEnd
-import com.example.selfunlockalarm.app.theme.BgGradientVia
-import com.example.selfunlockalarm.app.theme.BorderBlueLight
-import com.example.selfunlockalarm.app.theme.CardBg
-import com.example.selfunlockalarm.app.theme.GradientEndPurple
-import com.example.selfunlockalarm.app.theme.GradientStartBlue
-import com.example.selfunlockalarm.app.theme.TextBlue
-import com.example.selfunlockalarm.app.theme.TextGradientEnd
-import com.example.selfunlockalarm.app.theme.TextGradientStart
-import com.example.selfunlockalarm.app.theme.TextWhite
+import com.example.selfunlockalarm.uicommon.theme.BgGradientEnd
+import com.example.selfunlockalarm.uicommon.theme.BgGradientVia
+import com.example.selfunlockalarm.uicommon.theme.BorderBlueLight
+import com.example.selfunlockalarm.uicommon.theme.CardBg
+import com.example.selfunlockalarm.uicommon.theme.GradientEndPurple
+import com.example.selfunlockalarm.uicommon.theme.GradientStartBlue
+import com.example.selfunlockalarm.uicommon.theme.TextBlue
+import com.example.selfunlockalarm.uicommon.theme.TextGradientEnd
+import com.example.selfunlockalarm.uicommon.theme.TextGradientStart
+import com.example.selfunlockalarm.uicommon.theme.TextWhite
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingUiState
 import java.util.Locale
 

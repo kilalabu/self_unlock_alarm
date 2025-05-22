@@ -1,4 +1,4 @@
-package com.example.selfunlockalarm.app.theme
+package com.example.selfunlockalarm.uicommon.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
