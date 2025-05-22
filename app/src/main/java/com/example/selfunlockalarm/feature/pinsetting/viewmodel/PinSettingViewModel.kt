@@ -79,7 +79,7 @@ class PinSettingViewModel @Inject constructor(
                             }
 
                             currentState.copy(
-                                confirmPin = newConfirmPin,
+                                confirmPin = if (errorMessage != null) "" else newConfirmPin,
                                 stage = newStage,
                                 errorMessage = errorMessage
                             )
@@ -134,21 +134,6 @@ class PinSettingViewModel @Inject constructor(
                 }
             } else {
                 currentState // Loading状態などでは何もしない
-            }
-        }
-    }
-
-    fun resetConfirmPin() {
-        _uiState.update { currentState ->
-            if (currentState is PinSettingUiState.Ready &&
-                currentState.stage == PinSettingUiState.Ready.Stage.CONFIRM_PIN
-            ) {
-                currentState.copy(
-                    confirmPin = "",
-                    errorMessage = null // エラーメッセージをクリア
-                )
-            } else {
-                currentState
             }
         }
     }

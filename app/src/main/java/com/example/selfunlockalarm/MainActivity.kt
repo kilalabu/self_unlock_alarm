@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
-import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
+import com.example.selfunlockalarm.uicommon.theme.SelfUnlockAlarmTheme
 import com.example.selfunlockalarm.navigation.AppNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
