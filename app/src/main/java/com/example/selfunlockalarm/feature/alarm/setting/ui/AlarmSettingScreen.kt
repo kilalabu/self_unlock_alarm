@@ -1,8 +1,6 @@
 package com.example.selfunlockalarm.feature.alarm.setting.ui
 
 import android.Manifest
-import android.app.TimePickerDialog
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -35,7 +33,6 @@ import com.example.selfunlockalarm.app.theme.SelfUnlockAlarmTheme
 import com.example.selfunlockalarm.app.theme.TextBlue
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingUiState
 import com.example.selfunlockalarm.feature.alarm.setting.viewmodel.AlarmSettingViewModel
-import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,11 +50,17 @@ fun AlarmSettingScreen(
         onUpdateNotificationPermissionState = { isGranted ->
             viewModel.updateNotificationPermissionState(isGranted)
         },
+        onTimeClick = {
+            viewModel.onTimeClick()
+        },
         onUpdateAlarmTime = { hour, minute ->
             viewModel.updateAlarmTime(hour, minute)
         },
         onToggleAlarm = { enabled ->
             viewModel.toggleAlarm(enabled)
+        },
+        onTimePickerDismiss = {
+            viewModel.onTimePickerDismiss()
         }
     )
 }
@@ -69,8 +72,10 @@ private fun AlarmSettingScreen(
     onNavigateExactAlarmPermissionSettings: () -> Unit,
     onNavigateToPinSetting: () -> Unit,
     onUpdateNotificationPermissionState: (Boolean) -> Unit,
+    onTimeClick: () -> Unit,
     onUpdateAlarmTime: (hour: Int, minute: Int) -> Unit,
     onToggleAlarm: (Boolean) -> Unit,
+    onTimePickerDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
@@ -131,11 +136,7 @@ private fun AlarmSettingScreen(
         ) { innerPadding ->
             AlarmSettingContent(
                 uiState = uiState,
-                onTimeClick = {
-                    showTimePickerDialog(context) { h, m ->
-                        onUpdateAlarmTime(h, m)
-                    }
-                },
+                onTimeClick = onTimeClick,
                 onToggleAlarm = { enabled ->
                     onToggleAlarm(enabled)
                 },
@@ -146,31 +147,28 @@ private fun AlarmSettingScreen(
                     .padding(innerPadding)
                     .padding(16.dp)
             )
+
+            when (val state = uiState.timePickerState) {
+                is AlarmSettingUiState.TimePickerState.Shown -> {
+                    TimePickerDialog(
+                        hour = state.hour,
+                        minute = state.minute,
+                        onConfirm = { timePickerState ->
+                            onUpdateAlarmTime(
+                                timePickerState.hour,
+                                timePickerState.minute
+                            )
+                        },
+                        onDismiss = onTimePickerDismiss
+                    )
+                }
+
+                AlarmSettingUiState.TimePickerState.Dismissed -> {}
+            }
         }
     }
 }
 
-/**
- * 時間選択ダイアログを表示
- */
-private fun showTimePickerDialog(
-    context: Context,
-    onTimeSelected: (Int, Int) -> Unit
-) {
-    val calendar = Calendar.getInstance()
-    val hour = calendar.get(Calendar.HOUR_OF_DAY)
-    val minute = calendar.get(Calendar.MINUTE)
-
-    TimePickerDialog(
-        context,
-        { _, selectedHour, selectedMinute ->
-            onTimeSelected(selectedHour, selectedMinute)
-        },
-        hour,
-        minute,
-        true // 24時間表示
-    ).show()
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -185,8 +183,9 @@ private fun AlarmSettingScreenPreview() {
         onNavigateExactAlarmPermissionSettings = {},
         onNavigateToPinSetting = {},
         onUpdateNotificationPermissionState = {},
+        onTimeClick = {},
         onUpdateAlarmTime = { _, _ -> },
-        onToggleAlarm = {}
+        onToggleAlarm = {},
+        onTimePickerDismiss = {}
     )
-
 }

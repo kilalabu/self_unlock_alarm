@@ -47,6 +47,20 @@ class AlarmSettingViewModel @Inject constructor(
     }
 
     /**
+     * 時間設定を表示
+     */
+    fun onTimeClick() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                timePickerState = AlarmSettingUiState.TimePickerState.Shown(
+                    hour = currentState.selectedHour,
+                    minute = currentState.selectedMinute
+                )
+            )
+        }
+    }
+
+    /**
      * アラーム時間を更新
      */
     fun updateAlarmTime(hour: Int, minute: Int) {
@@ -55,6 +69,22 @@ class AlarmSettingViewModel @Inject constructor(
                 hour = hour,
                 minute = minute,
                 isEnabled = uiState.value.isAlarmEnabled
+            )
+        }
+        _uiState.update { currentState ->
+            currentState.copy(
+                timePickerState = AlarmSettingUiState.TimePickerState.Dismissed,
+            )
+        }
+    }
+
+    /**
+     * 時間設定を閉じる
+     */
+    fun onTimePickerDismiss() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                timePickerState = AlarmSettingUiState.TimePickerState.Dismissed
             )
         }
     }
@@ -92,5 +122,11 @@ data class AlarmSettingUiState(
     val selectedHour: Int = 7,
     val selectedMinute: Int = 0,
     val hasNotificationPermission: Boolean = false,
-    val canScheduleExactAlarms: Boolean = true
-)
+    val canScheduleExactAlarms: Boolean = true,
+    val timePickerState: TimePickerState = TimePickerState.Dismissed,
+) {
+    sealed interface TimePickerState {
+        data class Shown(val hour: Int, val minute: Int) : TimePickerState
+        object Dismissed : TimePickerState
+    }
+}
