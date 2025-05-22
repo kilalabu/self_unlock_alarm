@@ -22,6 +22,7 @@ val CardBg = Color(0xFFFFFFFF)
 // Other UI Colors
 val TextBlue = Color(0xFF2563EB)       // blue-600 for text
 val TextWhite = Color.White
+val ErrorRed = Color(0xFFF44336)
 val BorderBlueLight = Color(0xFFDBEAFE) // blue-100 for border
 
 // Material Theme Colors (using single colors, gradients will be applied via Brush)
