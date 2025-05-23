@@ -1,3 +1,6 @@
+## Application Purpose
+SelfUnlockAlarm is a security-focused alarm application designed to prevent unauthorized alarm dismissal by requiring PIN code verification. The primary purpose is to ensure that only the user themselves can turn off the alarm, preventing third parties (such as family members) from stopping it and allowing the user to maintain their wake-up schedule.
+
 ## App Views
 |||
 |----| ----|
