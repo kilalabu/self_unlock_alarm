@@ -67,7 +67,7 @@ class AlarmSoundService : Service() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("起床時間です！")
             .setContentText("タップしてアラームを解除してください。")
-            .setSmallIcon(R.drawable.ic_launcher_foreground) // 適切なアイコンに
+            .setSmallIcon(R.drawable.ic_stat_name)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
